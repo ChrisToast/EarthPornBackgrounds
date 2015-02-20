@@ -48,10 +48,13 @@ def getBestResults(submissions, toIgnore, desktopNumber, numDesktops):
 
 def goodToUse(submission, toIgnore):
     p = re.compile("\[(\d+)(.*?)\]")
-    res = "".join([i for i in p.findall(submission.title)[0]]).split("x")
-    width = float(res[0].strip())
-    height = float(res[1].strip())
-    return width/height > 1.2 and submission.url not in toIgnore
+    try:
+        res = "".join([i for i in p.findall(submission.title)[0]]).split("x")
+        width = float(res[0].strip())
+        height = float(res[1].strip())
+        return width/height > 1.2 and submission.url not in toIgnore
+    except: #just in case anything goes wrong (improper submission format, non unicode characters)
+        return False
 
 
 def readImageToFile(path, url):
